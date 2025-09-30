@@ -11,7 +11,7 @@ const productRoutes = require("./routes/productRoutes");
 const customerRoutes = require("./routes/customerRoutes");
 const vendorRoutes = require("./routes/vendorRoutes");
 
-const { bindUser, authenticate, isAdmin } = require("./middleware/authenticate");
+const { bindUser, authenticate } = require("./middleware/authenticate");
 
 const app = express();
 
@@ -20,28 +20,36 @@ const expressLayouts = require("express-ejs-layouts");
 // Static files (css/js)
 app.use(express.static(path.join(__dirname, "public")));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true })); // for form posts
-app.use(cookieParser()); // <-- must be before bindUser
-
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cookieParser());
 app.use(methodOverride("_method"));
+
 app.set("view engine", "ejs");
 app.use(expressLayouts);
-app.set("layout", "layout"); // default layout file views/layout.ejs
+app.set("layout", "layout");
 
 app.use(bindUser);
 
 app.use((req, res, next) => {
-    res.locals.user = req.user;
-    res.locals.path = req.path;
-    next();
+  res.locals.user = req.user;
+  res.locals.path = req.path;
+  next();
 });
 
+// Routes
 app.use("/auth", authRoutes);
 app.use(authenticate);
-app.get('/', (req, res) => res.render("index"));
+app.get("/", (req, res) => res.render("index"));
 app.use("/products", productRoutes);
 app.use("/customers", customerRoutes);
 app.use("/vendors", vendorRoutes);
 
-const PORT = process.env.PORT;
-app.listen(PORT, () => console.log(`✅ Server running on http://localhost:${PORT}`));
+// ✅ Run locally OR export for Vercel
+if (require.main === module) {
+  // Running directly (local)
+  const PORT = process.env.PORT || 3000;
+  app.listen(PORT, () => console.log(`✅ Server running at http://localhost:${PORT}`));
+} else {
+  // Running on Vercel
+  module.exports = app;
+}
