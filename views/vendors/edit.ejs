@@ -1,0 +1,22 @@
+<h1>Edit Vendor</h1>
+<form action="/vendors/<%= vendor.id %>/update?_method=PUT" method="POST">
+    <div class="form-group">
+        <label class="form-label">Name</label>
+        <input type="text" name="name" value="<%= vendor.name %>" placeholder="Enter vendor Name" class="form-control" required>
+    </div>
+    <div class="form-group">
+        <label class="form-label">Phone</label>
+        <input type="text" name="phone" value="<%= vendor.phone %>" placeholder="Enter vendor Phone" class="form-control">
+    </div>
+    <div class="form-group">
+        <label class="form-label">Email</label>
+        <input type="email" name="email" value="<%= vendor.email %>" placeholder="Enter vendor Email" class="form-control">
+    </div>
+    <div class="form-group">
+        <label class="form-label">Address</label>
+        <input type="text" name="address" value="<%= vendor.address %>" placeholder="Enter vendor Address" class="form-control">
+    </div>
+
+    <button type="submit" class="btn ">Update</button>
+    <a href="/vendors" class="btn ">Cancel</a>
+</form>

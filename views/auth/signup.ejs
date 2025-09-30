@@ -1,0 +1,28 @@
+ <div class="auth-container">
+      <div class="auth-card card">
+        <div class="card-body">
+          <div class="auth-logo">
+            <span>SalePoint</span>
+          </div>
+          <h2 class="text-center mb-4">Sign Up</h2>
+          <form action="/auth/register" method="POST">
+            <div class="form-group">
+              <label class="form-label" for="name">Name</label>
+              <input type="name" name="name" class="form-control" id="name" placeholder="Enter your name">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="email">Email Address</label>
+              <input type="email" name="email" class="form-control" id="email" placeholder="Enter your email">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="password">Password</label>
+              <input type="password" name="password" class="form-control" id="password" placeholder="Enter your password">
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Sign Up</button>
+          </form>
+          <div class="auth-footer">
+            <p>Don't have an account? <a href="/auth/sign-in">Sign in</a></p>
+          </div>
+        </div>
+      </div>
+    </div>

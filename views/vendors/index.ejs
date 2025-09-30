@@ -1,0 +1,36 @@
+
+<div class="d-flex justify-content-between align-items-center">
+    <h1>Vendors</h1>
+    <a href="/vendors/new" class="btn p-1 btn-primary"> Add Vendor</a>
+</div>
+<div class="table-responsive">
+<table class="table table-striped table-hover">
+  <thead>
+    <tr>
+    <th>ID</th>
+    <th>Name</th>
+    <th>Phone</th>
+    <th>Email</th>
+    <th>Address</th>
+    <th>Actions</th>
+  </tr>
+  </thead>
+  <% vendors.forEach(vendor => { %>
+    <tr>
+      <td><%= vendor.id %></td>
+      <td><%= vendor.name %></td>
+      <td><%= vendor.phone %></td>
+      <td><%= vendor.email %></td>
+      <td><%= vendor.address %></td>
+      <td>
+        <div class="d-flex align-items-center gap-2">
+          <a href="/vendors/<%= vendor.id %>/edit" class="btn p-1 btn-info">Edit</a>
+          <form action="/vendors/<%= vendor.id %>/delete?_method=DELETE" method="POST" onsubmit="return confirm('Are you sure you want to delete this vendor?');">
+            <button class="btn p-1 btn-danger" type="submit">Delete</button>
+          </form>
+        </div>
+      </td>
+    </tr>
+  <% }) %>
+</table>
+</div>

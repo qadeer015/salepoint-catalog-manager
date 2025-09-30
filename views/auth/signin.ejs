@@ -1,0 +1,28 @@
+ <div class="auth-container">
+      <div class="auth-card card">
+        <div class="card-body">
+          <div class="auth-logo">
+            <span>SalePoint</span>
+          </div>
+          <h2 class="text-center mb-4">Sign In</h2>
+          <form action="/auth/login" method="POST">
+            <div class="form-group">
+              <label class="form-label" for="email">Email Address</label>
+              <input type="email" name="email" class="form-control" id="email" placeholder="Enter your email">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="password">Password</label>
+              <input type="password" name="password" class="form-control" id="password" placeholder="Enter your password">
+            </div>
+            <div class="form-group form-check">
+              <input type="checkbox" name="remember" class="form-check-input" id="remember">
+              <label class="form-check-label" for="remember">Remember me</label>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+          </form>
+          <div class="auth-footer">
+            <p>Don't have an account? <a href="/auth/sign-up">Sign up</a></p>
+          </div>
+        </div>
+      </div>
+    </div>

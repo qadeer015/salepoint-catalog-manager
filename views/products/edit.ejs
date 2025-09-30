@@ -1,0 +1,36 @@
+<h1>Edit Product</h1>
+<form action="/products/<%= product.id %>/update?_method=PUT" method="POST">
+    <div class="form-group">
+        <label class="form-label">Name</label>
+        <input type="text" name="name" value="<%= product.name %>" placeholder="Enter Product Name" class="form-control" required>
+    </div>
+
+    <div class="form-group">
+        <label class="form-label">Purchase Price</label>
+        <input type="number" name="purchase_price" value="<%= product.purchase_price %>" placeholder="Enter Product Purchase Price" class="form-control" required>
+    </div>
+    <div class="form-group">
+        <label class="form-label">Sale Price</label>
+        <input type="number" name="sale_price" value="<%= product.sale_price %>" placeholder="Enter Product Sale Price" class="form-control" required>
+    </div>
+    <div class="form-group">
+        <label class="form-label">Quantity</label>
+        <input type="number" name="quantity" value="<%= product.quantity %>" placeholder="Enter Product Quantity" class="form-control" required>
+    </div>
+    <div class="form-group">
+        <label class="form-label">Batch</label>
+        <input type="text" name="batch" value="<%= product.batch %>" placeholder="Enter Product Batch" class="form-control">
+    </div>
+    <div class="form-group">
+        <label class="form-label" for="vendor_id">Select Vendor:</label>
+        <select class="form-control" name="vendor_id" id="vendor_id">
+            <option value=""></option>
+            <% vendors.forEach(vendor => { %>
+            <option value="<%= vendor.id %>" <%= vendor.id == product.vendor_id ? 'selected' : '' %> class="form-control"><%= vendor.name %></option>
+            <% }) %>
+        </select>
+    </div>
+ 
+  <button type="submit" class="btn ">Update</button>
+  <a href="/products" class="btn ">Cancel</a>
+</form>

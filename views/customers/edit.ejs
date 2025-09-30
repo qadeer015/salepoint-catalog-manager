@@ -1,0 +1,26 @@
+<h1>Edit Customer</h1>
+<form action="/customers/<%= customer.id %>/update?_method=PUT" method="POST">
+    <div class="form-group">
+        <label class="form-label">Name</label>
+        <input type="text" name="name" value="<%= customer.name %>" placeholder="Enter Customer Name" class="form-control" required>
+    </div>
+    <div class="form-group">
+        <label class="form-label">Phone</label>
+        <input type="text" name="phone" value="<%= customer.phone %>" placeholder="Enter Customer Phone" class="form-control">
+    </div>
+    <div class="form-group">
+        <label class="form-label">Email</label>
+        <input type="email" name="email" value="<%= customer.email %>" placeholder="Enter Customer Email" class="form-control">
+    </div>
+    <div class="form-group">
+        <label class="form-label">CNIC</label>
+        <input type="text" name="cnic_number" value="<%= customer.cnic_number %>" placeholder="Enter Customer CNIC" class="form-control">
+    </div>
+    <div class="form-group">
+        <label class="form-label">Address</label>
+        <input type="text" name="address" value="<%= customer.address %>" placeholder="Enter Customer Address" class="form-control">
+    </div>
+
+    <button type="submit" class="btn ">Update</button>
+    <a href="/customers" class="btn ">Cancel</a>
+</form>

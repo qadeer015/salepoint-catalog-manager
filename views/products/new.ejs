@@ -1,0 +1,37 @@
+<h1>Add Product</h1>
+<form action="/products/create" method="POST">
+  <div class="form-group">
+    <label class="form-label">Name</label>
+    <input type="text" name="name" placeholder="Enter Product Name" class="form-control" required>
+  </div>
+  <div class="form-group">
+    <label class="form-label">Purchase Price</label>
+    <input type="number" name="purchase_price" placeholder="Enter Product Purchase Price" class="form-control" required>
+  </div>
+  <div class="form-group">
+    <label class="form-label">Sale Price</label>
+    <input type="number" name="sale_price" placeholder="Enter Product Sale Price" class="form-control" required>
+  </div>
+  <div class="form-group">
+    <label class="form-label">Quantity</label>
+    <input type="number" name="quantity" placeholder="Enter Product Quantity" class="form-control" required>
+  </div>
+  <div class="form-group">
+    <label class="form-label">Batch</label>
+    <input type="text" name="batch" placeholder="Enter Product Batch" class="form-control">
+  </div>
+  <div class="form-group">
+    <label class="form-label" for="vendor_id">Select Vendor:</label>
+    <select class="form-control" name="vendor_id" id="vendor_id" required>
+      <option class="form-control" value=""></option>
+      <% vendors.forEach(vendor=> { %>
+        <option value="<%= vendor.id %>" class="form-control">
+          <%= vendor.name %>
+        </option>
+        <% }) %>
+    </select>
+  </div>
+
+  <button class="btn " type="submit">Save</button>
+  <a href="/products" class="btn ">Cancel</a>
+</form>
