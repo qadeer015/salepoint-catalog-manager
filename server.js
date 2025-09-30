@@ -18,16 +18,18 @@ const app = express();
 const expressLayouts = require("express-ejs-layouts");
 
 // Static files (css/js)
-app.use(express.static(path.join(__dirname, "public")));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(methodOverride("_method"));
 
 app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
 app.use(expressLayouts);
 app.set("layout", "layout");
 
+
+app.use(express.static(path.join(__dirname, "public")));
 app.use(bindUser);
 
 app.use((req, res, next) => {
@@ -43,6 +45,11 @@ app.get("/", (req, res) => res.render("index"));
 app.use("/products", productRoutes);
 app.use("/customers", customerRoutes);
 app.use("/vendors", vendorRoutes);
+
+app.use((err, req, res, next) => {
+  console.error(err);
+  res.status(500).json({ error: err.message });
+});
 
 // ✅ Run locally OR export for Vercel
 if (require.main === module) {
