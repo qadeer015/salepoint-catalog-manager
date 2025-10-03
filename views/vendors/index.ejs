@@ -22,7 +22,9 @@
       <td>
         <div class="d-flex align-items-center gap-2">
           <a href="/vendors/<%= vendor.id %>/edit" class="btn p-1 btn-info">Edit</a>
-          <form action="/vendors/<%= vendor.id %>/delete?_method=DELETE" method="POST" onsubmit="return confirm('Are you sure you want to delete this vendor?');">
+          <form action="/vendors/<%= vendor.id %>/delete?_method=DELETE"
+             method="POST" 
+             onsubmit="return confirm('Are you sure you want to delete this vendor?');">
             <button class="btn p-1 btn-danger" type="submit">Delete</button>
           </form>
         </div>
