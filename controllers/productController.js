@@ -44,7 +44,6 @@ exports.addProduct = async (req, res) => {
   const { name, purchase_price, sale_price, quantity, batch, vendor_id } = req.body;
   try {
     const product = await Product.create(name, purchase_price, sale_price, quantity, batch, vendor_id, req.user.userId);
-    console.log(product);
     res.status(201).redirect("/products");
   } catch (err) {
     res.status(500).json({ error: err.message });

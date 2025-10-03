@@ -4,11 +4,10 @@ const User = require("../models/User");
 require("dotenv").config();
 
 exports.register = async (req, res) => {
-  const { name, email, password } = req.body;
+  const { company_name, name, email, password } = req.body;
   try {
-    console.log(name, email, password);
     const hashedPassword = await bcrypt.hash(password, 10);
-    await User.create(name, email, hashedPassword, "customer");
+    await User.create(company_name, name, email, hashedPassword, "customer");
     res.status(201).redirect("/auth/sign-in");
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -19,14 +18,10 @@ exports.login = async (req, res) => {
   const { email, password } = req.body;
   try {
     const user = await User.findUser({ key: "email", value: email });
-    console.log(user);
     if (!user) return res.status(400).json({ message: "Invalid email or password" });
-    console.log(user);
     const validPass = await bcrypt.compare(password, user.password);
     if (!validPass) return res.status(400).json({ message: "Invalid email or password" });
-    console.log(user);
     const token = jwt.sign({ userId: user.id, user: user }, process.env.JWT_SECRET, { expiresIn: "7d" });
-    console.log(token);
     // Set the token in a cookie
     res.cookie('token', token, { 
         httpOnly: true, 
@@ -34,8 +29,11 @@ exports.login = async (req, res) => {
         sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'lax',
         maxAge: 7 * 24 * 60 * 60 * 1000 
     });
-    console.log(token);
-    res.redirect("/");
+    if(user.role == "admin"){
+        return res.redirect("/admin/dashboard");
+    }else{
+        return res.redirect("/");
+    }
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

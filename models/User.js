@@ -1,11 +1,11 @@
 const db = require("../config/db");
 
 class User {
-  static async create(name, email, password, role = "customer") {
+  static async create(company_name, name, email, password, role = "customer") {
     try {
       const [result] = await db.execute(
-        "INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)",
-        [name, email, password, role]
+        "INSERT INTO users (company_name, name, email, password, role) VALUES (?, ?, ?, ?, ?)",
+        [company_name, name, email, password, role]
       );
       return result;
     } catch (error) {

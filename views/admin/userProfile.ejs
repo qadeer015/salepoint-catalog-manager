@@ -1,0 +1,96 @@
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h1><%= user.name %></h1>
+        <p>
+            <strong>Email : </strong>
+            <%= user.email %>
+        </p>
+        <p>
+            <strong>Company / Shop Name : </strong>
+            <%= user.company_name || 'NIL' %>
+        </p>
+    </div>
+    <a href="/admin/users/<%= user.id %>/import-data" class="btn p-1 btn-primary">Import Data</a>
+</div>
+<hr>
+<div class="d-flex justify-content-between align-items-center">
+    <h1>Products</h1>
+</div>
+<div class="table-responsive">
+<table class="table table-striped table-hover">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Purchase</th>
+      <th>Sale</th>
+      <th>Qty</th>
+      <th>Batch</th>
+      <th>Vendor</th>
+    </tr>
+  </thead>
+  <% products.forEach(product => { %>
+    <tr>
+      <td><%= product.name %></td>
+      <td><%= product.purchase_price %></td>
+      <td><%= product.sale_price %></td>
+      <td><%= product.quantity %></td>
+      <td><%= product.batch %></td>
+      <td><%= product.vendor_name %></td>
+    </tr>
+  <% }) %>
+</table>
+</div>
+
+<div class="d-flex justify-content-between align-items-center">
+    <h1>Customers</h1>
+</div>
+<div class="table-responsive">
+<table class="table table-striped table-hover">
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>Name</th>
+    <th>Phone</th>
+    <th>CNIC</th>
+    <th>Email</th>
+    <th>Address</th>
+  </tr>
+  </thead>
+  <% customers.forEach(customer => { %>
+    <tr>
+      <td><%= customer.id %></td>
+      <td><%= customer.name %></td>
+      <td><%= customer.phone %></td>
+      <td><%= customer.cnic_number %></td>
+      <td><%= customer.email %></td>
+      <td><%= customer.address %></td>
+    </tr>
+  <% }) %>
+</table>
+</div>
+
+<div class="d-flex justify-content-between align-items-center">
+    <h1>Vendors</h1>
+</div>
+<div class="table-responsive">
+<table class="table table-striped table-hover">
+  <thead>
+    <tr>
+    <th>ID</th>
+    <th>Name</th>
+    <th>Phone</th>
+    <th>Email</th>
+    <th>Address</th>
+  </tr>
+  </thead>
+  <% vendors.forEach(vendor => { %>
+    <tr>
+      <td><%= vendor.id %></td>
+      <td><%= vendor.name %></td>
+      <td><%= vendor.phone %></td>
+      <td><%= vendor.email %></td>
+      <td><%= vendor.address %></td>
+    </tr>
+  <% }) %>
+</table>
+</div>

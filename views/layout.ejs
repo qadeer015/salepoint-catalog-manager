@@ -13,9 +13,10 @@
 </head>
 
 <body>
+<% if (path !== "/auth/sign-in" && path !== "/auth/sign-up") { %>
     <nav>
         <div class="container">
-            <span><a href="/" class="nav-logo">SalePoint</a></span>
+            <span><a href="/" class="nav-logo">SalePoint<sup>CM</sup></a></span>
             <button class="nav-toggle" id="navToggle">☰</button>
             <div class="nav-links" id="navLinks">
                 <a <%= path=="/products" ? "class=active" : "" %> href="/products">Products</a>
@@ -31,17 +32,19 @@
         </div>
     </nav>
     <hr>
+    <% } %>
     <!-- Main Content Area -->
     <div class="container py-4 overflow-x-hidden">
         <%- body %>
     </div>
-
+    <% if (path !== "/auth/sign-in" && path !== "/auth/sign-up") { %>
     <script>
         // Mobile navigation toggle
         document.getElementById('navToggle').addEventListener('click', function () {
             document.getElementById('navLinks').classList.toggle('active');
         });
     </script>
+    <% } %>
 </body>
 
 </html>

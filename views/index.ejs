@@ -1,2 +1,55 @@
-<h1>Welcome to Sale Point</h1>
-<p>This is the homepage.</p>
+<!-- Page Header -->
+<div class="d-flex my-4">
+  <div class="col">
+    <h1>Dashboard</h1>
+  </div>
+  <div class="col-auto">
+    <div class="d-flex">
+      <!-- <button class="btn btn-outline-primary mr-2">
+            <i class="fas fa-download"></i> Export Report
+          </button> -->
+      <a href="/products/new" class="btn btn-primary">
+        <i class="fas fa-plus"></i> Add Product
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Stats Cards -->
+<div class="d-flex flex-md-column flex-sm-column gap-2">
+
+  <div class="w-100 mb-2">
+    <a href="/products">
+      <div class="stat-card">
+        <h3 class="text-primary">
+          <%= totals.total_products %>
+        </h3>
+        <p>Total Products</p>
+        <small class="text-success">↑ <%= growth.products %> % from <%= products[products.length - 1].readable_date %></small>
+      </div>
+    </a>
+  </div>
+  <div class="w-100 mb-2">
+
+    <a href="/customers">
+      <div class="stat-card">
+        <h3 class="text-success">
+          <%= totals.total_customers %>
+        </h3>
+        <p>Total Customers</p>
+        <small class="text-success">↑<%= growth.customers %> % from <%= customers[customers.length - 1].readable_date %></small>
+      </div>
+    </a>
+  </div>
+  <div class="w-100 mb-2">
+    <a href="/vendors">
+      <div class="stat-card">
+        <h3 class="text-info">
+          <%= totals.total_vendors %>
+        </h3>
+        <p>Total Vendors</p>
+        <small class="text-success">↑<%= growth.vendors %> % from <%= vendors[vendors.length - 1].readable_date %></small>
+      </div>
+    </a>
+  </div>
+</div>

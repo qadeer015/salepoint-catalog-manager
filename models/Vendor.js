@@ -4,7 +4,7 @@ class Vendor {
   static async create(name, phone, address, email, userId) {
     try {
       const [result] = await db.execute(
-        "INSERT INTO vendors (name, phone, address, email, user_id) VALUES (?, ?, ?, ?, ?)",
+        "INSERT INTO vendors (name, phone, address, email, user_id, created_at) VALUES (?, ?, ?, ?, ?, NOW())",
         [name, phone, address, email, userId]
       );
       return result;

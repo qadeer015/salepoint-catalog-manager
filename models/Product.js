@@ -4,7 +4,7 @@ class Product {
   static async create(name, purchase_price, sale_price, quantity, batch, vendor_id, user_id) {
     try {
       const [result] = await db.execute(
-        "INSERT INTO products (name, purchase_price, sale_price, quantity, batch, vendor_id, user_id) VALUES (?, ?, ?, ?, ?, ?, ?)",
+        "INSERT INTO products (name, purchase_price, sale_price, quantity, batch, vendor_id, user_id, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, NOW())",
         [name, purchase_price, sale_price, quantity, batch, vendor_id, user_id]
       );
       return result;

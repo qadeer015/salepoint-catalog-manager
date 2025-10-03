@@ -28,7 +28,7 @@ function authenticate(req, res, next) {
 }
 
 function isAdmin(req, res, next) {
-    if (!req.user || req.user.role !== 'admin') {
+    if (!req.user.user || req.user.user.role !== 'admin') {
         return res.status(403).redirect('/');
     }
     next();

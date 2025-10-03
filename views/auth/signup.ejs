@@ -1,28 +1,285 @@
- <div class="auth-container">
-      <div class="auth-card card">
-        <div class="card-body">
-          <div class="auth-logo">
-            <span>SalePoint</span>
+<div class="auth-container">
+  <div class="auth-card card">
+    <div class="card-body">
+      <div class="auth-logo">
+        <span>SalePoint</span>
+      </div>
+      <h2 class="text-center mb-4">Sign Up</h2>
+
+      <!-- Enhanced Step indicator -->
+      <div class="progress-container mb-4">
+        <div class="step-indicators">
+          <div class="step-indicator active" data-step="0">
+            <div class="step-number">1</div>
+            <div class="step-label">Company Info</div>
           </div>
-          <h2 class="text-center mb-4">Sign Up</h2>
-          <form action="/auth/register" method="POST">
-            <div class="form-group">
-              <label class="form-label" for="name">Name</label>
-              <input type="name" name="name" class="form-control" id="name" placeholder="Enter your name">
-            </div>
-            <div class="form-group">
-              <label class="form-label" for="email">Email Address</label>
-              <input type="email" name="email" class="form-control" id="email" placeholder="Enter your email">
-            </div>
-            <div class="form-group">
-              <label class="form-label" for="password">Password</label>
-              <input type="password" name="password" class="form-control" id="password" placeholder="Enter your password">
-            </div>
-            <button type="submit" class="btn btn-primary btn-block">Sign Up</button>
-          </form>
-          <div class="auth-footer">
-            <p>Don't have an account? <a href="/auth/sign-in">Sign in</a></p>
+          <div class="step-indicator" data-step="1">
+            <div class="step-number">2</div>
+            <div class="step-label">Account Details</div>
           </div>
         </div>
+        <div class="progress">
+          <div id="progressBar" class="progress-bar" role="progressbar" style="width: 50%;"></div>
+        </div>
+      </div>
+
+      <!-- Multi-step form -->
+      <form id="signupForm" action="/auth/register" method="POST">
+
+        <!-- Step 1 -->
+        <div class="step step-1">
+          <div class="form-group mb-3">
+            <label class="form-label" for="company-name">Company / Shop Name</label>
+            <input type="text" name="company_name" class="form-control" id="company-name"
+              placeholder="What is name of your company / shop?">
+          </div>
+          <div class="form-group mb-4">
+            <label class="form-label" for="name">Your Name</label>
+            <input type="text" name="name" class="form-control" id="name" placeholder="Your name">
+          </div>
+          <button type="button" class="btn btn-primary w-100 next-step">Next</button>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="step step-2 d-none">
+          <div class="form-group mb-3">
+            <label class="form-label" for="email">Email</label>
+            <input type="email" name="email" class="form-control" id="email" placeholder="Your email">
+          </div>
+
+          <!-- Password field with toggle -->
+          <div class="form-group mb-3">
+            <label class="form-label" for="password">Password</label>
+            <div class="input-group position-relative">
+              <input type="password" name="password" class="form-control" id="password" placeholder="Your password">
+              <button type="button" class="password-toggle" id="togglePassword">
+                👁
+              </button>
+            </div>
+            <p class="text-muted mt-1">(6 characters minimum)</p>
+          </div>
+
+          <!-- Enhanced Captcha -->
+          <div class="form-group mb-4">
+            <label class="form-label">Captcha Verification</label>
+            <div class="captcha-container">
+              <div class="captcha-display">
+                <span id="captchaText"></span>
+              </div>
+              <div class="captcha-controls">
+                <input type="text" id="captchaInput" class="form-control captcha-input" placeholder="Enter captcha">
+                <button type="button" class="btn btn-outline-secondary" id="refreshCaptcha">
+                  <span>↻ Refresh</span>
+                </button>
+              </div>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-success w-100">Sign Up</button>
+        </div>
+      </form>
+
+      <div class="auth-footer">
+        <p>Already have an account? <a href="/auth/sign-in">Sign in</a></p>
       </div>
     </div>
+  </div>
+</div>
+
+<script>
+    const steps = document.querySelectorAll(".step");
+    const nextBtn = document.querySelector(".next-step");
+    const signupForm = document.getElementById("signupForm");
+    const passwordInput = document.getElementById("password");
+    const captchaText = document.getElementById("captchaText");
+    const captchaInput = document.getElementById("captchaInput");
+    const refreshCaptchaBtn = document.getElementById("refreshCaptcha");
+    const progressBar = document.getElementById("progressBar");
+    const stepIndicators = document.querySelectorAll(".step-indicator");
+    const togglePasswordBtn = document.getElementById("togglePassword");
+
+    let currentStep = 0;
+    let captchaAnswer = null;
+
+    // Validation rules
+    const validations = {
+        companyName: {
+            element: document.getElementById("company-name"),
+            isValid: () => validations.companyName.element.value.trim().length >= 3,
+            message:"Please provide a company name."
+        },
+        name: {
+            element: document.getElementById("name"),
+            isValid: () => validations.name.element.value.trim().length >= 1,
+            message:"Please provide your name."
+        },
+        email: {
+            element: document.getElementById("email"),
+            isValid: () => /\S+@\S+\.\S+/.test(validations.email.element.value),
+            message:"Please provide a valid email."
+        },
+        password: {
+            element: document.getElementById("password"),
+            isValid: () => validations.password.element.value.length >= 6,
+            message:"Password must be at least 6 characters."
+        },
+        captcha: {
+            element: document.getElementById("captchaInput"),
+            isValid: () => parseInt(validations.captcha.element.value) === captchaAnswer,
+            message:"Captcha verification failed."
+        }
+    };
+
+    // Show step
+    function showStep(index) {
+        steps.forEach((step, i) => {
+            step.classList.toggle("d-none", i !== index);
+        });
+        currentStep = index;
+        updateProgress();
+    }
+
+    // Update progress bar
+    function updateProgress() {
+        const keys = Object.keys(validations);
+        let validCount = keys.filter(key => validations[key].isValid()).length;
+        let percent = (validCount / keys.length) * 100;
+        progressBar.style.width = `${percent}%`;
+
+        // Highlight current step only
+        stepIndicators.forEach((el, i) => {
+            if (i === currentStep) {
+                el.classList.add("active");
+            } else {
+                el.classList.remove("active");
+            }
+        });
+      saveFormData();
+    }
+
+    // Captcha generator
+    function generateCaptcha() {
+        const operations = ['+', '-', '*'];
+        const operation = operations[Math.floor(Math.random() * operations.length)];
+
+        let a, b;
+        if (operation === '+') {
+            a = Math.floor(Math.random() * 10) + 1;
+            b = Math.floor(Math.random() * 10) + 1;
+            captchaAnswer = a + b;
+        } else if (operation === '-') {
+            a = Math.floor(Math.random() * 15) + 5;
+            b = Math.floor(Math.random() * 5) + 1;
+            captchaAnswer = a - b;
+        } else {
+            a = Math.floor(Math.random() * 8) + 2;
+            b = Math.floor(Math.random() * 5) + 2;
+            captchaAnswer = a * b;
+        }
+
+        captchaText.textContent = `${a} ${operation} ${b} = ?`;
+        captchaInput.value = "";
+        captchaInput.classList.remove("is-invalid");
+    }
+
+    // Save form data
+    function saveFormData() {
+        const data = {
+            company_name: document.getElementById("company-name").value,
+            name: document.getElementById("name").value,
+            email: document.getElementById("email").value,
+            password: document.getElementById("password").value
+        };
+        localStorage.setItem("signupForm", JSON.stringify(data));
+    }
+
+    // Load form data
+    function loadFormData() {
+        const saved = localStorage.getItem("signupForm");
+        if (saved) {
+            const data = JSON.parse(saved);
+            document.getElementById("company-name").value = data.company_name || "";
+            document.getElementById("name").value = data.name || "";
+            document.getElementById("email").value = data.email || "";
+            document.getElementById("password").value = data.password || "";
+        }
+    }
+
+    // Validate a field
+    function validateField(key, showError = true) {
+        const field = validations[key];
+        if (!field.isValid()) {
+            if (showError) field.element.classList.add("is-invalid");
+            return false;
+        }
+        field.element.classList.remove("is-invalid");
+        return true;
+    }
+
+    // Step validators
+    function validateStep1() {
+        return validateField("companyName") & validateField("name");
+    }
+
+    function validateStep2() {
+        let valid = true;
+        valid = validateField("email") && valid;
+        valid = validateField("password") && valid;
+        valid = validateField("captcha") && valid;
+        return valid;
+    }
+
+    // Next button
+    nextBtn.addEventListener("click", () => {
+        if (validateStep1()) {
+            showStep(1);
+        }
+        updateProgress();
+    });
+
+    // Submit form
+    signupForm.addEventListener("submit", (e) => {
+        if (!validateStep2()) {
+            e.preventDefault();
+            if (!validations.captcha.isValid()) {
+                generateCaptcha(); // refresh captcha if wrong
+            }
+            updateProgress();
+        } else {
+            localStorage.removeItem("signupForm");
+        }
+    });
+
+    // Refresh captcha
+    refreshCaptchaBtn.addEventListener("click", generateCaptcha);
+
+    // Toggle password
+    togglePasswordBtn.addEventListener("click", () => {
+        const type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
+        passwordInput.setAttribute("type", type);
+        togglePasswordBtn.textContent = type === "password" ? "👁" : "🙈";
+    });
+
+    // Step indicator click navigation
+    stepIndicators.forEach(indicator => {
+        indicator.addEventListener("click", () => {
+            const stepIndex = parseInt(indicator.getAttribute("data-step"));
+            if (stepIndex === 1 && !validateStep1()) return;
+            showStep(stepIndex);
+        });
+    });
+
+    // Input events → remove error + update progress
+    Object.keys(validations).forEach(key => {
+        validations[key].element.addEventListener("input", () => {
+            if (validations[key].isValid()) {
+                validations[key].element.classList.remove("is-invalid");
+            }
+            updateProgress();
+        });
+    });
+
+    // Init
+    loadFormData();
+    generateCaptcha();
+    updateProgress();
+</script>

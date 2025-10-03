@@ -4,7 +4,7 @@ class Customer {
   static async create(name, phone, cnic_number, address, email, userId) {
     try {
       const [result] = await db.execute(
-        "INSERT INTO customers (name, phone, cnic_number, address, email, user_id) VALUES (?, ?, ?, ?, ?, ?)",
+        "INSERT INTO customers (name, phone, cnic_number, address, email, user_id, created_at) VALUES (?, ?, ?, ?, ?, ?, NOW())",
         [name, phone, cnic_number, address, email, userId]
       );
       return result;
